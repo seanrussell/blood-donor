@@ -2,7 +2,7 @@ version: 2.1
 orbs: 
   apex: circleci/salesforce-apex@1.0.1
 jobs: 
-  install_authenticate: 
+  install_authenticate_deploy: 
     docker: 
       - image: cimg/node:14.5
     steps: 
@@ -10,9 +10,12 @@ jobs:
       - apex/setup: 
           defaultusername: admin@blooddonor.com
       - run: 
-          name: List Auth Connection Information
-          command: sfdx auth:list
+          name: Convert from source to metadata format
+          command: sfdx force:source:convert -d tmp_convert
+      - run:
+          name: Deploy to Salesforce Org
+          command: sfdx force:mdapi:deploy --deploydir tmp_convert --testlevel RunLocalTests --verbose
 workflows: 
   basic-test: 
     jobs: 
-      - install_authenticate
+      - install_authenticate_deploy
