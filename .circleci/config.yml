@@ -14,7 +14,7 @@ jobs:
           command: sfdx force:source:convert -d tmp_convert
       - run:
           name: Deploy to Salesforce Org
-          command: sfdx force:mdapi:deploy --deploydir tmp_convert --testlevel RunLocalTests --verbose
+          command: sfdx force:mdapi:deploy -u admin@blooddonor.com --deploydir tmp_convert --testlevel RunLocalTests --verbose
 workflows: 
   basic-test: 
     jobs: 
